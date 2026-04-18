@@ -1,23 +1,268 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
+
+<!-- ================= HEAD ================= -->
 <head>
-  <meta charset="UTF-8">
-  <title>AI Chatbot</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NEXUS — Futuristic OS</title>
+
+  <!-- ===== GOOGLE FONTS ===== -->
+  <style>
+  @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800;900&family=Rajdhani:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;600&display=swap');
+
+  /* =========================================================
+     1. ROOT VARIABLES (DARK + LIGHT THEME)
+  ========================================================== */
+  :root {
+    --c-bg:#050812;
+    --c-bg2:#080d1a;
+    --c-surface:rgba(8,18,40,.72);
+    --c-border:rgba(0,200,255,.18);
+    --c-glow:#00c8ff;
+    --c-glow2:#b400ff;
+    --c-glow3:#00ffa3;
+    --c-text:#d0e8ff;
+    --c-muted:rgba(160,210,255,.48);
+    --c-accent:#00c8ff;
+    --c-danger:#ff3a6e;
+
+    --menu-w:280px;
+    --radius:16px;
+
+    --ease-s:cubic-bezier(.34,1.56,.64,1);
+    --ease-m:cubic-bezier(.25,.46,.45,.94);
+  }
+
+  [data-theme="light"] {
+    --c-bg:#e6edf8;
+    --c-bg2:#d4e1f5;
+    --c-surface:rgba(215,232,255,.72);
+    --c-border:rgba(0,110,200,.22);
+    --c-glow:#0078c8;
+    --c-glow2:#8800cc;
+    --c-glow3:#00a868;
+    --c-text:#071530;
+    --c-muted:rgba(10,40,90,.52);
+    --c-accent:#0078c8;
+    --c-danger:#cc1a46;
+  }
+
+  /* =========================================================
+     2. RESET & BASE
+  ========================================================== */
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{
+    font-family:'Rajdhani',sans-serif;
+    background:var(--c-bg);
+    color:var(--c-text);
+    transition:.4s;
+  }
+
+  /* =========================================================
+     3. BACKGROUND EFFECTS
+  ========================================================== */
+  #bg-canvas{
+    position:fixed;
+    inset:0;
+    z-index:0;
+  }
+
+  .grid-overlay{
+    position:fixed;
+    inset:0;
+    background-image:
+      linear-gradient(rgba(0,200,255,.04) 1px,transparent 1px),
+      linear-gradient(90deg,rgba(0,200,255,.04) 1px,transparent 1px);
+    background-size:60px 60px;
+  }
+
+  /* =========================================================
+     4. MENU BUTTON
+  ========================================================== */
+  #menu-btn{
+    position:fixed;
+    top:18px;
+    left:18px;
+    width:48px;
+    height:48px;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+  }
+
+  /* =========================================================
+     5. SIDEBAR
+  ========================================================== */
+  #sidebar{
+    position:fixed;
+    width:var(--menu-w);
+    height:100%;
+    left:-280px;
+    transition:.5s;
+  }
+
+  body.menu-open #sidebar{
+    left:0;
+  }
+
+  /* =========================================================
+     6. TOPBAR
+  ========================================================== */
+  #topbar{
+    position:fixed;
+    height:70px;
+    width:100%;
+    display:flex;
+    align-items:center;
+  }
+
+  /* =========================================================
+     7. MAIN CONTENT
+  ========================================================== */
+  #main{
+    min-height:100vh;
+  }
+
+  .page{
+    display:none;
+    padding:88px 30px;
+  }
+
+  .page.active{
+    display:block;
+  }
+
+  /* =========================================================
+     8. CARD COMPONENT
+  ========================================================== */
+  .card{
+    background:var(--c-surface);
+    border:1px solid var(--c-border);
+    border-radius:var(--radius);
+    padding:20px;
+  }
+
+  /* =========================================================
+     9. BUTTONS
+  ========================================================== */
+  .btn{
+    padding:10px 20px;
+    border-radius:10px;
+    cursor:pointer;
+  }
+
+  .btn-p{
+    background:linear-gradient(135deg,var(--c-glow),var(--c-glow2));
+    color:white;
+  }
+
+  .btn-d{
+    background:linear-gradient(135deg,var(--c-danger),#7b0030);
+    color:white;
+  }
+
+  /* =========================================================
+     10. HERO SECTION
+  ========================================================== */
+  .hero{
+    text-align:center;
+    padding:40px;
+  }
+
+  .hero-h1{
+    font-family:'Orbitron';
+    font-size:3rem;
+  }
+
+  /* =========================================================
+     11. PROFILE SECTION
+  ========================================================== */
+  .p-av{
+    width:80px;
+    height:80px;
+    border-radius:50%;
+    background:linear-gradient(135deg,var(--c-glow),var(--c-glow2));
+  }
+
+  /* =========================================================
+     12. TABLE
+  ========================================================== */
+  .dtable{
+    width:100%;
+    border-collapse:collapse;
+  }
+
+  .dtable th,
+  .dtable td{
+    padding:10px;
+  }
+
+  /* =========================================================
+     13. SETTINGS TOGGLE
+  ========================================================== */
+  .tpill{
+    width:40px;
+    height:20px;
+    border-radius:10px;
+  }
+
+  /* =========================================================
+     14. FAQ
+  ========================================================== */
+  .faq-item{
+    border-bottom:1px solid rgba(0,200,255,.07);
+  }
+
+  /* =========================================================
+     15. LOGOUT SECTION
+  ========================================================== */
+  .lo-center{
+    text-align:center;
+  }
+
+  </style>
 </head>
+
+<!-- ================= BODY ================= -->
 <body>
 
-<div class="chat-container">
-  <h2>AI Chatbot</h2>
+<!-- BACKGROUND -->
+<canvas id="bg-canvas"></canvas>
+<div class="grid-overlay"></div>
 
-  <div id="chat-box"></div>
+<!-- MENU BUTTON -->
+<div id="menu-btn">
+  <span></span>
+  <span></span>
+  <span></span>
+</div>
 
-  <div class="input-area">
-    <input type="text" id="user-input" placeholder="Type your message..." />
-    <button onclick="sendMessage()">Send</button>
+<!-- SIDEBAR -->
+<div id="sidebar">
+  <div class="sb-head">
+    <div class="sb-logo">NEXUS</div>
   </div>
 </div>
 
-<script src="script.js"></script>
+<!-- TOPBAR -->
+<div id="topbar">
+  <div class="tb-title">Dashboard</div>
+</div>
+
+<!-- MAIN CONTENT -->
+<div id="main">
+
+  <!-- HOME PAGE -->
+  <div class="page active">
+    <div class="hero">
+      <h1 class="hero-h1">Welcome to NEXUS</h1>
+      <p>Futuristic Operating System UI</p>
+    </div>
+  </div>
+
+</div>
+
 </body>
 </html>
